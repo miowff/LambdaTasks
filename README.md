@@ -1,1 +1,1 @@
-this is a repository for lambda taska
+this is a repository for lambda tasks

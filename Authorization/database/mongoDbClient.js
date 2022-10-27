@@ -1,5 +1,5 @@
 import {MongoClient} from 'mongodb';
-import {MONGO_DB_CONNECTION_URL} from '../constants.js';
+import {MONGO_DB_CONNECTION_URL} from '../mongodbUrl.js';
 
 const mongoDbClient = new MongoClient(MONGO_DB_CONNECTION_URL);
 const database = mongoDbClient.db("AuthorizationDB");

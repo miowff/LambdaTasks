@@ -9,6 +9,7 @@ class CoinbaseService
     {
         const usdExchange = await coinbaseRequests.requestDataAsync("USD");
         const result=<CurrencyDataModel[]>[];
+        const unixTime = Date.now();
         for(let i = 0;i<currencies.length;i++)
         {
             let price = 1 / +usdExchange.data.rates[currencies[i].CurrencyCode];
@@ -22,8 +23,9 @@ class CoinbaseService
                 Id:uuidv4(),
                 CurrencyId:currencies[i].Id,
                 Price:price,
-                UnixTime:Date.now(),
-                MarketName:"Coinbase"
+                UnixTime:unixTime,
+                MarketName:"Coinbase",
+                DateTime:new Date()
             };
             result.push(priceDataModel);
         }

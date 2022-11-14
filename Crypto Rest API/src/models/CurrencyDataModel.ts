@@ -4,5 +4,6 @@ export interface CurrencyDataModel
     CurrencyId:string;
     Price:number;
     UnixTime:number;
-    MarketName:string
+    MarketName:string;
+    DateTime:Date;
 }

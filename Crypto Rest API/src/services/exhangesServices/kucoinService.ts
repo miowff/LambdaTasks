@@ -11,6 +11,7 @@ class KukoinService
         const codesString = createCodesStering(currencies);
         const kucoinData = await kucoinRequests.requestData(codesString);
         const result=<CurrencyDataModel[]>[];
+        const unixTime = Date.now();
         for(let i = 0;i<currencies.length;i++ )
         {
             let price = kucoinData[currencies[i].CurrencyCode];
@@ -24,8 +25,9 @@ class KukoinService
                 Id:uuidv4(),
                 CurrencyId:currencies[i].Id,
                 Price:price,
-                UnixTime:Date.now(),
-                MarketName:"Kucoin"
+                UnixTime:unixTime,
+                MarketName:"Kucoin",
+                DateTime:new Date()
             };
             result.push(priceDataModel);
         }

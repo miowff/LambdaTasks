@@ -11,6 +11,7 @@ class CoinMarketCapService
         const codesString = createCodesStering(currencies);
         const data = await coinMarketCapRequests.requestDataAsync(codesString);
         const result=<CurrencyDataModel[]>[];
+        const unixTime = Date.now();
         for(let i = 0;i<currencies.length;i++)
         {
             const price = data[currencies[i].CurrencyCode][0].quote.USD.price;
@@ -19,8 +20,9 @@ class CoinMarketCapService
                 Id:uuidv4(),
                 CurrencyId:currencies[i].Id,
                 Price:price,
-                UnixTime:Date.now(),
-                MarketName:"CoinMarketCap"
+                UnixTime:unixTime,
+                MarketName:"CoinMarketCap",
+                DateTime:new Date()
             };
             result.push(priceDataModel);
         }

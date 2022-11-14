@@ -9,6 +9,7 @@ class CoinStatsService
     {
         const coinStatsData = await coinStatsRequests.requestDataAsync();
         const result=<CurrencyDataModel[]>[];
+        const unixTime = Date.now();
         for(let i = 0;i<currencies.length;i++)
         {
             let currencyData = coinStatsData.find((value: { symbol: string; })=>value.symbol == currencies[i].CurrencyCode);
@@ -23,8 +24,9 @@ class CoinStatsService
                 Id:uuidv4(),
                 CurrencyId:currencies[i].Id,
                 Price:price,
-                UnixTime:Date.now(),
-                MarketName:"CoinStats"
+                UnixTime:unixTime,
+                MarketName:"CoinStats",
+                DateTime:new Date()
             };
             result.push(priceDataModel);
         }

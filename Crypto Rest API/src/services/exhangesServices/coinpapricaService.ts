@@ -9,6 +9,7 @@ class CoinpapricaService
     {
         const coinpaprikaData = await coinpapricaRequests.requestDataAsync();
         const result = <CurrencyDataModel[]>[];
+        const unixTime = Date.now();
         for(let i = 0;i<currencies.length;i++)
         {
             const currencyData = coinpaprikaData.find((value:{id:string})=>value.id==currencies[i].CoinPapricaId);
@@ -18,8 +19,9 @@ class CoinpapricaService
                 Id:uuidv4(),
                 CurrencyId:currencies[i].Id,
                 Price:price,
-                UnixTime:Date.now(),
-                MarketName:"Coinpaprica"
+                UnixTime:unixTime,
+                MarketName:"Coinpaprica",
+                DateTime:new Date()
             };
             result.push(priceDataModel);
         }

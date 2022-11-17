@@ -1,10 +1,11 @@
 import telegramBotClient from "../telegram-bot/telegram-bot-client";
 import usersService from "./users-service";
-import currenciesRepository from "../database/repositories/currencies-repository";
 import { UserModel } from "../models/user-model";
 import BUTTONS from "../telegram-bot/buttons";
-import {createInlineKeyboardForCurrencies} from '../telegram-bot/inline-keyboard';
+import inlineKeyboardService from "../telegram-bot/inline-keyboard";
 import { SendMessageOptions,Message  } from "node-telegram-bot-api";
+import usersRepository from "../database/repositories/users-repository";
+import currenciesRepository from "../database/repositories/currencies-repository";
 
 class BotCommandsHandler
 {
@@ -34,19 +35,21 @@ class BotCommandsHandler
             }
             case BUTTONS.AVELIABLE_CURRENCIES.text:
             {
-                const avaliableCurrencies = await currenciesRepository.getAllAsync();
-                const options:SendMessageOptions = 
-                {
-                    reply_markup: 
-                    {
-                        inline_keyboard:createInlineKeyboardForCurrencies(avaliableCurrencies,4)
-                    }
-                };
+                const currencies = await currenciesRepository.getAllAsync();
+                inlineKeyboardService.returnRoute='/BackToMenu';
+                const options:SendMessageOptions = {reply_markup: {inline_keyboard:inlineKeyboardService.createInlineKeyboard(currencies,4)}};
                 return telegramBotClient.sendMessage(chatId,"Доступные криптовалюты:",options);
             }
             case BUTTONS.HELP.text:
             {
                 return telegramBotClient.sendMessage(chatId,"Список доступных комманд");
+            }
+            case BUTTONS.FAVORITES.text:
+            {
+                const favouriteCurencies = await usersRepository.getFavouriteCurrenciesAsync(chatId);
+                inlineKeyboardService.returnRoute='/BackToFavourites';
+                const options:SendMessageOptions = {reply_markup:{inline_keyboard: inlineKeyboardService.createInlineKeyboard(favouriteCurencies,4)}};
+                return telegramBotClient.sendMessage(chatId,"Ваши избранные криптовалюты",options)
             }
             default:
             return telegramBotClient.sendMessage(chatId,"Неизвестная команда");

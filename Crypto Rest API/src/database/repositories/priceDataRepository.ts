@@ -1,8 +1,8 @@
-import { CurrencyDataModel } from '../../models/CurrencyDataModel';
 import {BaseRepository} from './baseRepository';
 import database from '../databaseConnection';
+import { CurrenciesPriceData } from '../../models/CurrenciesPriceData';
 
-class PriceDataRepository extends BaseRepository<CurrencyDataModel>
+class PriceDataRepository extends BaseRepository<CurrenciesPriceData>
 {
     async deleteLegacyData()
     {
@@ -11,25 +11,22 @@ class PriceDataRepository extends BaseRepository<CurrencyDataModel>
         await this.db.executeQueryAsync(
             `DELETE FROM ${this.tableName} WHERE (${date} - UnixTime) > ${dayInUnixFormat}`);
     }
-    async getCurrencyPrice(currencyId:string,time:number)
+    async getCurrencyPrice(currencyCode:string,time:number)
     {
         const currentDate = Date.now();
         const [price] = await this.db.executeQueryAsync(
-        `SELECT AVG(Price) FROM ${this.tableName} 
-        WHERE (${currentDate} - UnixTime) < ${time} 
-        AND CurrencyId = '${currencyId}'`);
+        `SELECT AVG(${currencyCode}) FROM ${this.tableName} WHERE (${currentDate} - UnixTime) < ${time}`);
         return price;
     }
-    async getCurrencyPriceByMarket(currencyId:string,time:number,marketName:string)
+    async getCurrencyPriceByMarket(currencyCode:string,time:number,marketName:string)
     {
         const currentDate = Date.now();
         const [price] = await this.db.executeQueryAsync(
-        `SELECT AVG(Price) FROM ${this.tableName} 
-        WHERE (${currentDate} - UnixTime) < ${time} 
-        AND CurrencyId = '${currencyId}' 
+        `SELECT AVG(${currencyCode}) FROM ${this.tableName} 
+        WHERE (${currentDate} - UnixTime) < ${time}  
         AND MarketName = '${marketName}'`);
         return price;
     }
 }
-const priceDataRepository = new PriceDataRepository("pricedata",database);
+const priceDataRepository = new PriceDataRepository("allcurrenciesdata",database);
 export default priceDataRepository;

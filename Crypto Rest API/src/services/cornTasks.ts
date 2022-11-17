@@ -11,7 +11,7 @@ export const updatePrices = new CronJob
   }
 );
 
-export const deleteLegacyData = new CronJob('15 0 * * *',
+export const deleteLegacyData = new CronJob('0 */4 * * *',
   async function()
   {
     await priceDataRepository.deleteLegacyData();

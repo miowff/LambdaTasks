@@ -13,7 +13,7 @@ class PriceDataService
                     getCurrencyPriceByMarket(query.Currency,unixTime,query.Exchange);
             const reponce:PriceDataResponceModel =
             { 
-                Price:JSON.parse(JSON.stringify(price).replace(/\[|]/g,''))['AVG(Price)'],
+                Price:JSON.parse(JSON.stringify(price).replace(/\[|]/g,''))[`AVG(${query.Currency})`],
                 Exchange:query.Exchange,
                 Currency:query.Currency,
                 Time:query.Hours+" hours",
@@ -24,7 +24,7 @@ class PriceDataService
         const price = await priceDataRepository.getCurrencyPrice(query.Currency,unixTime);
         const responce:PriceDataResponceModel =
         {
-            Price:JSON.parse(JSON.stringify(price).replace(/\[|]/g,''))['AVG(Price)'],
+            Price:JSON.parse(JSON.stringify(price).replace(/\[|]/g,''))[`AVG(${query.Currency})`],
             Exchange:"Average data from  all markets",
             Currency:query.Currency,
             Time:query.Hours+" hours",

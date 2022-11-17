@@ -1,29 +1,20 @@
 import coinpapricaRequests from '../requests/requestDataFromCoinparica';
-import { v4 as uuidv4 } from 'uuid';
-import { CurrencyDataModel } from '../../models/CurrencyDataModel';
 import { CurrencyModel } from '../../models/CurrencyModel';
+import { CurrenciesPriceData } from '../../models/CurrenciesPriceData';
 
 class CoinpapricaService
 {
-    async getPriceInfoAsync(currencies:CurrencyModel[]):Promise<CurrencyDataModel[]>
+    async getPriceInfoAsync(date:Date,unixTime:number,currencies:CurrencyModel[]):Promise<CurrenciesPriceData>
     {
         const coinpaprikaData = await coinpapricaRequests.requestDataAsync();
-        const result = <CurrencyDataModel[]>[];
-        const unixTime = Date.now();
+        const result = new CurrenciesPriceData(date,unixTime,"Coinpaprica");
+
         for(let i = 0;i<currencies.length;i++)
         {
             const currencyData = coinpaprikaData.find((value:{id:string})=>value.id==currencies[i].CoinPapricaId);
             const price = currencyData.quotes.USD.price;
-            const priceDataModel = 
-            {
-                Id:uuidv4(),
-                CurrencyId:currencies[i].Id,
-                Price:price,
-                UnixTime:unixTime,
-                MarketName:"Coinpaprica",
-                DateTime:new Date()
-            };
-            result.push(priceDataModel);
+            const key = currencies[i].CurrencyCode as keyof CurrenciesPriceData;
+            result[key] = price;
         }
         return result;
     }

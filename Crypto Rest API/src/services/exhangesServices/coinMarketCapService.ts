@@ -1,30 +1,21 @@
 import coinMarketCapRequests from '../requests/requestDataFromCoinmarketcap';
 import {createCodesStering} from '../createCurrenciesString';
-import { v4 as uuidv4 } from 'uuid';
-import {CurrencyDataModel} from '../../models/CurrencyDataModel';
 import { CurrencyModel } from '../../models/CurrencyModel';
+import { CurrenciesPriceData } from '../../models/CurrenciesPriceData';
 
 class CoinMarketCapService
 {
-    async getPriceInfoAsync(currencies:CurrencyModel[]):Promise<CurrencyDataModel[]>
+    async getPriceInfoAsync(date:Date,unixTime:number,currencies:CurrencyModel[]):Promise<CurrenciesPriceData>
     {
         const codesString = createCodesStering(currencies);
         const data = await coinMarketCapRequests.requestDataAsync(codesString);
-        const result=<CurrencyDataModel[]>[];
-        const unixTime = Date.now();
+        const result = new CurrenciesPriceData(date,unixTime,"CoinMarketCap");
+
         for(let i = 0;i<currencies.length;i++)
         {
             const price = data[currencies[i].CurrencyCode][0].quote.USD.price;
-            const priceDataModel = 
-            {   
-                Id:uuidv4(),
-                CurrencyId:currencies[i].Id,
-                Price:price,
-                UnixTime:unixTime,
-                MarketName:"CoinMarketCap",
-                DateTime:new Date()
-            };
-            result.push(priceDataModel);
+            const key = currencies[i].CurrencyCode as keyof CurrenciesPriceData;
+            result[key] = price;
         }
         return result;
     }

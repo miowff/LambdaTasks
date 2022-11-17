@@ -1,6 +1,5 @@
 import { Database } from 'sqlite3';
 import db from '../databse'
-import { createQuestionmarksString } from '../../services/create-questionmarks-string';
 
 export abstract class BaseRepository<T extends object>
 {
@@ -27,7 +26,7 @@ export abstract class BaseRepository<T extends object>
     {
         const keys = Object.keys(model);
         const values = Object.values(model);
-        const questionmarks = createQuestionmarksString(values);
+        const questionmarks = this.createQuestionmarksString(values);
         await db.run(`INSERT INTO ${this.tableName}(${keys.toString()}) VALUES(${questionmarks})`,values);
     }
     async getById(id:string|number):Promise<T>
@@ -51,5 +50,17 @@ export abstract class BaseRepository<T extends object>
                 resolve(result);
             });
         });
+    }
+
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    createQuestionmarksString(values:any[]):string
+    {
+        let result = '?';
+        for(let i=1;i<values.length;i++)
+        {
+            result+=',?';
+        }
+        return result;
     }
 }

@@ -12,12 +12,11 @@ app.use(bodyParser.json());
 app.use('/',defaultRouter);
 app.use(handleError);
 
-updatePrices.start();
-deleteLegacyData.start()
-
 addCurrenciesToDb();
+updatePrices.start();
+deleteLegacyData.start();
 
-app.listen(constants.PORT,()=>
+app.listen(constants.PORT,async ()=>
 {
   console.log(`Server started on port ${constants.PORT}`);
 });

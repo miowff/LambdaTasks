@@ -1,15 +1,13 @@
 import coinStatsRequests from '../requests/requestDataFromCoinStats';
-import { v4 as uuidv4 } from 'uuid';
-import { CurrencyDataModel } from '../../models/CurrencyDataModel';
 import { CurrencyModel } from '../../models/CurrencyModel';
+import { CurrenciesPriceData } from '../../models/CurrenciesPriceData';
 
 class CoinStatsService
 {
-    async getPriceInfoAsync(currencies:CurrencyModel[]):Promise<CurrencyDataModel[]>
+    async getPriceInfoAsync(date:Date,unixTime:number,currencies:CurrencyModel[]):Promise<CurrenciesPriceData>
     {
         const coinStatsData = await coinStatsRequests.requestDataAsync();
-        const result=<CurrencyDataModel[]>[];
-        const unixTime = Date.now();
+        const result = new CurrenciesPriceData(date,unixTime,"Coinstats");
         for(let i = 0;i<currencies.length;i++)
         {
             let currencyData = coinStatsData.find((value: { symbol: string; })=>value.symbol == currencies[i].CurrencyCode);
@@ -19,16 +17,9 @@ class CoinStatsService
                 currencyData = dataByCoinId['coin'];
             }
             const price = currencyData['price'];
-            const priceDataModel = 
-            {   
-                Id:uuidv4(),
-                CurrencyId:currencies[i].Id,
-                Price:price,
-                UnixTime:unixTime,
-                MarketName:"CoinStats",
-                DateTime:new Date()
-            };
-            result.push(priceDataModel);
+
+            const key = currencies[i].CurrencyCode as keyof CurrenciesPriceData;
+            result[key] = price;
         }
         return result;
     }

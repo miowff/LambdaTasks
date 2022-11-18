@@ -25,8 +25,9 @@ class InlineKeyboardService
     {
         return [[{text:'Назад',callback_data:JSON.stringify(new CallbackDataQuery(this.returnRoute))},
         {text:'Детали',callback_data:JSON.stringify(new CallbackDataQuery('/Details',currency.Id))}],
-        [isInFavourites?{text:'Убрать из избранного',callback_data:JSON.stringify(new CallbackDataQuery('/RemoveFromFavourites',currency.Id))}
-        :{text:'В избранное',callback_data:JSON.stringify(new CallbackDataQuery('/AddToFavourite',currency.Id))}]]
+        [isInFavourites?
+        {text:'Убрать из избранного',callback_data:JSON.stringify(new CallbackDataQuery('/RemoveFavourite',currency.Id))}:
+        {text:'В избранное',callback_data:JSON.stringify(new CallbackDataQuery('/AddToFavourite',currency.Id))}]]
     }
 
     createInlineButton(text:string,callback_data:string)

@@ -12,6 +12,7 @@ class Constants
     SERVER_URL:string;
     WEBHOOK_URL:string;
     REQUEST_URL:string;
+    CRYPTO_API_URL:string;
     constructor()
     { 
         this.PORT = process.env.PORT as string;
@@ -23,6 +24,7 @@ class Constants
         this.SERVER_URL = process.env.SERVER_URL as string;
         this.WEBHOOK_URL = process.env.WEBHOOK_URL as string;
         this.REQUEST_URL = process.env.REQUEST_URL as string;
+        this.CRYPTO_API_URL = process.env.CRYPTO_API_URL as string;
     }
 }
 

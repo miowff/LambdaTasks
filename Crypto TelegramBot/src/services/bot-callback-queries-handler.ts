@@ -6,6 +6,7 @@ import telegramBotClient from '../telegram-bot/telegram-bot-client';
 import { PriceDataDetails } from '../models/dtos/price-data-details-dto';
 import inlineKeyboardService from '../telegram-bot/inline-keyboard';
 import usersRepository from '../database/repositories/users-repository';
+import {getCurrencyPrice} from './get-currency-price';
 
 class BotCallbackQueriesHandler
 {
@@ -45,24 +46,31 @@ class BotCallbackQueriesHandler
 
         const currencyId = query.currencyId as string
         const currency = await currenciesRepository.getById(currencyId);
-
+        const fifteenMinPrice = await getCurrencyPrice(currency.CurrencyCode,0.25);
         switch(query.action)
         {
             case '/Info':
             {
-                const priceData = new PriceDataModel(currency.Id,currency.CurrencyCode,"99999")
+                const priceData = new PriceDataModel(currency.Id,currency.CurrencyCode,fifteenMinPrice)
 
                 const isInFavourites = await currenciesRepository.isInFavouritesAsync(chatId,currency.Id);
 
-                const options:SendMessageOptions = {reply_markup: {inline_keyboard:inlineKeyboardService.currencyInlineKeyboard(currency,isInFavourites)}};
+                const options:SendMessageOptions = 
+                {reply_markup: {inline_keyboard:inlineKeyboardService.currencyInlineKeyboard(currency,isInFavourites)}};
 
                 await telegramBotClient.deleteMessage(chatId,messageId);
                 return await telegramBotClient.sendMessage(chatId,priceData.toString(),options);
             }
             case '/Details':
             {
-                const priceDetails = new PriceDataDetails("99999","99999","99999","99999","99999","99999");
-                const priceData = new PriceDataModel(currency.Id,currency.CurrencyCode,"99999",priceDetails);
+                const thirtyMinPrice = await getCurrencyPrice(currency.CurrencyCode,0.5);
+                const oneHourPrice = await getCurrencyPrice(currency.CurrencyCode,1);
+                const threeHoursPrice = await getCurrencyPrice(currency.CurrencyCode,3);
+                const sixHoursPrice = await getCurrencyPrice(currency.CurrencyCode,6);
+                const twelveHoursPrrice = await getCurrencyPrice(currency.CurrencyCode,12);
+                const oneDayPrice = await getCurrencyPrice(currency.CurrencyCode,24);
+                const priceDetails = new PriceDataDetails(thirtyMinPrice,oneHourPrice,threeHoursPrice,sixHoursPrice,twelveHoursPrrice,oneDayPrice);
+                const priceData = new PriceDataModel(currency.Id,currency.CurrencyCode,fifteenMinPrice,priceDetails);
 
                 const options:SendMessageOptions = 
                 {reply_markup: {inline_keyboard:[[{text:'Назад',callback_data:JSON.stringify(new CallbackDataQuery('/Info',currency.Id))}]]}};
@@ -73,16 +81,16 @@ class BotCallbackQueriesHandler
             case '/AddToFavourite':
             {
                 await currenciesRepository.addToFavouritesAsync(chatId,currencyId);
-                const priceData = new PriceDataModel(currency.Id,currency.CurrencyCode,"99999")
+                const priceData = new PriceDataModel(currency.Id,currency.CurrencyCode,fifteenMinPrice)
 
                 const options:SendMessageOptions = {reply_markup: {inline_keyboard:inlineKeyboardService.currencyInlineKeyboard(currency,true)}};
                 await telegramBotClient.deleteMessage(chatId,messageId);
                 return await telegramBotClient.sendMessage(chatId,priceData.toString(),options);
             }
-            case '/RemoveFromFavourites':
+            case '/RemoveFavourite':
             {
                 await usersRepository.removeCurrencyFromFavourites(currencyId,chatId);
-                const priceData = new PriceDataModel(currency.Id,currency.CurrencyCode,"99999")
+                const priceData = new PriceDataModel(currency.Id,currency.CurrencyCode,fifteenMinPrice)
 
                 const options:SendMessageOptions = {reply_markup: {inline_keyboard:inlineKeyboardService.currencyInlineKeyboard(currency,false)}};
                 await telegramBotClient.deleteMessage(chatId,messageId);

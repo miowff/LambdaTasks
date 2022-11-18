@@ -17,7 +17,7 @@ export class PriceDataModel
     public toString():string
     {
         let priceDataString = `${this.CurrencyCode} - ${this.CurrencyId}
-        \nСредняя цена за 15 минут: - ${this.Price}`;
+        \nСредняя цена за 15 минут: - ${this.Price}$`;
         if(this.PriceDataDetails)
         {
             priceDataString+= this.PriceDataDetails.toString();

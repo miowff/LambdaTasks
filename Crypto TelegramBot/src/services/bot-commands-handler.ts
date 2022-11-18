@@ -40,10 +40,6 @@ class BotCommandsHandler
                 const options:SendMessageOptions = {reply_markup: {inline_keyboard:inlineKeyboardService.createInlineKeyboard(currencies,4)}};
                 return telegramBotClient.sendMessage(chatId,"Доступные криптовалюты:",options);
             }
-            case BUTTONS.HELP.text:
-            {
-                return telegramBotClient.sendMessage(chatId,"Список доступных комманд");
-            }
             case BUTTONS.FAVORITES.text:
             {
                 const favouriteCurencies = await usersRepository.getFavouriteCurrenciesAsync(chatId);

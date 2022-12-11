@@ -1,6 +1,7 @@
+import { S3Event,Context } from "aws-lambda";
 import dynamoDBService from "src/services/dynamoDB-service";
 
-export const handler = async (event, context, callback)=> 
+export const handler = async (event:S3Event, context:Context, callback)=> 
 {
     const imageKey = decodeURIComponent(event.Records[0].s3.object.key);
     const userName = imageKey.split('/')[0];

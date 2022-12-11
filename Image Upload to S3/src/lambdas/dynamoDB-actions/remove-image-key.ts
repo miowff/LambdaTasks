@@ -1,6 +1,7 @@
+import { S3Event } from "aws-lambda";
 import dynamoDBService from "src/services/dynamoDB-service";
 
-export const handler = async (event, context, callback)=> 
+export const handler = async (event:S3Event, context, callback)=> 
 {
     try
     {

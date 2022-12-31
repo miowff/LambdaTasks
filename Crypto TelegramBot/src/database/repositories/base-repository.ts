@@ -13,11 +13,11 @@ export abstract class BaseRepository<T extends object>
 
     async getAllAsync():Promise<T[]>
     {
-        return new Promise((resolve)=>
+        return new Promise((resolve,reject)=>
         {
             db.all(`SELECT * FROM ${this.tableName}`,[],(err,rows)=>
             {
-                if(err) {throw err}
+                if(err) {reject(err)}
                 resolve(rows);
             });
         });
@@ -33,20 +33,20 @@ export abstract class BaseRepository<T extends object>
     {
         if(typeof id === 'string')
         {
-            return new Promise((resolve)=>
+            return new Promise((resolve,reject)=>
             {
                 this.db.get(`SELECT * FROM ${this.tableName} WHERE Id = '${id}'`,(err,result)=>
                 {
-                    if(err) {throw err}
+                    if(err) {reject(err)}
                     resolve(result);
                 });
             });
         }
-        return new Promise((resolve)=>
+        return new Promise((resolve,reject)=>
         {
             this.db.get(`SELECT * FROM ${this.tableName} WHERE Id = ${id}`,(err,result)=>
             {
-                if(err) {throw err}
+                if(err) {reject(err)}
                 resolve(result);
             });
         });

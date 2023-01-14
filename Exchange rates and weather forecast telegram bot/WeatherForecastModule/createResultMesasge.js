@@ -3,18 +3,20 @@ import dateFormat from 'dateformat';
 
 export function createResultMessage(weatherData,cityName)
 {
-    var result = cityName + os.EOL + convertUnixDataToDay(weatherData[0].dt)+ " " + "Сегодня" + os.EOL;
-    for(var i = 0; i < weatherData.length; i++)
+    var result = cityName + os.EOL + convertUnixDataToDay(weatherData[0].dt)+ " " + "Сегодня" + os.EOL + 
+    convertUnixDataToHours(weatherData[0].dt) + " " + weatherData[0].main.temp + "C "  + weatherData[0].weather[0].description 
+    +  emojiForWeather(weatherData[0].weather[0].description) + os.EOL;
+    for(var i = 1; i < weatherData.length; i++)
     {
-       if(i - 1 > 0 &&
-        convertUnixDataToDay(weatherData[i-1].dt) != convertUnixDataToDay(weatherData[i].dt))
-       {
-        result += convertUnixDataToDay(weatherData[i].dt)+ " " 
-                + convertUnixDataToDayAndMounth(weatherData[i].dt) + os.EOL;
-       }
-       var weatherDescription = weatherData[i].weather[0].description;
-       result += convertUnixDataToHours(weatherData[i].dt) + " "
-                + "+" + weatherData[i].main.temp + "C "  + weatherDescription 
+        
+        if(convertUnixDataToDay(weatherData[i-1].dt) != convertUnixDataToDay(weatherData[i].dt))
+        {
+            result += convertUnixDataToDay(weatherData[i].dt)+ " " + convertUnixDataToDayAndMounth(weatherData[i].dt) + os.EOL;
+            continue;
+        }
+        var weatherDescription = weatherData[i].weather[0].description;
+        result += convertUnixDataToHours(weatherData[i].dt) + " "
+                + weatherData[i].main.temp + "C "  + weatherDescription 
                 + emojiForWeather(weatherDescription) + os.EOL;
     }
     return result;
@@ -52,6 +54,7 @@ function emojiForWeather(weatherDescription)
         case 'туман': return '🌫';
         case 'снег': return '❄️';
         case 'гроза': return '⛈';
+        case 'небольшой снег':return '🌨️';
         default: return '';
     }
 }

@@ -65,7 +65,6 @@ const bot = new TelegramBot(TELEGRAM_BOT_TOKEN,
                     var userCity = chatIdState.get(chatId);
                         return forecastForSixHoursAsync(userCity).then(function(result)
                             {
-                                console.log(result);
                                 sendMessage(result,chatId,KEYBOARDS.weather);
                             });
                     case BUTTONS.Weather.forecastForThreeHours:var userCity = chatIdState.get(chatId);

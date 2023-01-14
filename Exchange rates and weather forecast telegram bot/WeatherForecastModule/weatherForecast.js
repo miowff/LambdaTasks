@@ -94,9 +94,10 @@ export async function forecastForSixHoursAsync(cityName)
         for(let i = 0; i < weatherData.length; i++)
         {
             var date = new Date(weatherData[i].dt * 1000);
-            if(date.getHours() % 6 == 0)
+            let hours = date.getUTCHours();
+            if(hours%6==0)
             {
-                weatherDataForSixHours.push(weatherData[i]);
+               weatherDataForSixHours.push(weatherData[i]);
             }
         }
         return createResultMessage(weatherDataForSixHours,cityName);

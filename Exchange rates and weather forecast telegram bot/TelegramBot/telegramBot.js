@@ -4,10 +4,9 @@ import { BUTTONS } from './keyboardButtons.js';
 import { KEYBOARDS } from './keyboards.js';
 import {forecastForThreeHoursAsync, forecastForSixHoursAsync,getCurrentWindData} from '../WeatherForecastModule/weatherForecast.js';
 import {getExchangeRate} from '../CurrencyExchangeModule/interactExchangeRatesFile.js';
-import { CahatIdStateDictionary } from './chatIdStateDictionary.js';
 import { userState } from './userStates.js';
 
-var chatIdState = new CahatIdStateDictionary();
+var chatIdState = new Map();
 
 const bot = new TelegramBot(TELEGRAM_BOT_TOKEN,
 {
@@ -30,18 +29,18 @@ const bot = new TelegramBot(TELEGRAM_BOT_TOKEN,
         var chatId = message.chat.id;
         if(text === '/start')
         {
-            chatIdState.add(chatId, userState.WatingForCityInput);
+            chatIdState.set(chatId, userState.WatingForCityInput);
             bot.sendMessage(chatId,"Отправьте название своего города");
         }
         else
         {
-            var state = chatIdState.findAt(chatId);
+            var state = chatIdState.get(chatId);
             if(state === userState.WatingForCityInput)
             {
                 if(isUserMessageCanBeCityName(message))
                 {
                     sendMessage(`Вы живете в городе ${text}.`,chatId,KEYBOARDS.home);
-                    chatIdState.changeState(chatId,text);
+                    chatIdState.set(chatId,text);
                     return
                 }
                 return bot.sendMessage(chatId,"Отправьте корректное название города.");
@@ -62,23 +61,25 @@ const bot = new TelegramBot(TELEGRAM_BOT_TOKEN,
                         });
                     case BUTTONS.Default.back: return sendMessage('Возвращаю в главное меню...',chatId,KEYBOARDS.home);
                     case BUTTONS.Home.weather: return sendMessage('Выберите вариант',chatId,KEYBOARDS.weather);
-                    case BUTTONS.Weather.forecastForSixHours: var userCity = chatIdState.findAt(chatId);
+                    case BUTTONS.Weather.forecastForSixHours: 
+                    var userCity = chatIdState.get(chatId);
                         return forecastForSixHoursAsync(userCity).then(function(result)
                             {
+                                console.log(result);
                                 sendMessage(result,chatId,KEYBOARDS.weather);
                             });
-                    case BUTTONS.Weather.forecastForThreeHours:var userCity = chatIdState.findAt(chatId);
+                    case BUTTONS.Weather.forecastForThreeHours:var userCity = chatIdState.get(chatId);
                         return forecastForThreeHoursAsync(userCity).then(function(result)
                             {
                                 sendMessage(result,chatId,KEYBOARDS.weather);
                             });
-                    case BUTTONS.Weather.windData:var userCity = chatIdState.findAt(chatId);
+                    case BUTTONS.Weather.windData:var userCity = chatIdState.get(chatId);
                             return getCurrentWindData(userCity).then(function(result)
                             {
                                 sendMessage(result,chatId,KEYBOARDS.weather);
                             })
                     case BUTTONS.Settings.changeCity:  
-                        chatIdState.changeState(chatId,userState.WatingForCityInput);
+                        chatIdState.set(chatId,userState.WatingForCityInput);
                         return bot.sendMessage(chatId, 'Введите название города');
                 }
             }

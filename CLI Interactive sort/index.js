@@ -104,19 +104,27 @@ rl.question(ENTER_REQUEST, function(input)
         return;
       case commands.AlphabetSort:
         console.log(alphabetSort(wordsArray));
+        break;
       case commands.OnlyUniqueValues:
         console.log(onlyUniqueValues(wordsArray));
+        break;
       case commands.OnlyUniqueWords:
         console.log(onlyUniqueWords(wordsArray));
+        break;
       case commands.SortNumbersByAscending:
         console.log(sortNumbersByAscending(wordsArray));
+        break;
       case commands.SortNumbersByDescanding:
         console.log(sortNumbersByDescanding(wordsArray));
+        break;
       case commands.WordsByQuantityOfLetters:
         console.log(sortWordsByQuantityOfLetters(wordsArray));
+        break;
       }
     rl.prompt();
   });
 });
+
+
 
 

@@ -4,7 +4,7 @@ import dateFormat from 'dateformat';
 
 export function deadlineCounter(requestData,requestDate)
 {
-    var timeRates = TIME_RATES[requestData.language];
+    var timeRates = TIME_RATES[requestData.language.toLowerCase()];
     var hoursToDo = 0.5 +(requestData.count / timeRates);
     if(hoursToDo < 1)
     {

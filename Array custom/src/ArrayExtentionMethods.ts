@@ -1,6 +1,4 @@
 export {};
-export function declareCutomMethods()
-{
 
 Array.prototype.any = function <T>(predicate?: (value: T) => boolean) 
 {
@@ -233,5 +231,4 @@ Array.prototype.distinctBy = function<T>(selector:(key:T)=>T)
         }
     }
     return result;
-}
 }

@@ -1,4 +1,5 @@
-import {declareCutomMethods} from './ArrayExtentionMethods';
+import './ArrayExtentionMethods';
+
 class Person
 {
     id:number;
@@ -11,7 +12,7 @@ class Person
         this.code = code;
     }
 }
-declareCutomMethods();
+
 const persons:Person[]=[new Person(1,"Person1",100),
 new Person(2,"Person2",500),new Person(3,"Person3",300),new Person(4,"Person4",300)];
 

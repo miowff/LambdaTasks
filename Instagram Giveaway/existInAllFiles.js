@@ -1,7 +1,4 @@
 import fs from 'fs/promises';
-import {quickSort} from './quickSort.js';
-import {uniqueValues} from './findUniqueValues.js';
-
 function getIntersection(arrayA,arrayB)
 {
     var arrayASet = new Set(arrayA);

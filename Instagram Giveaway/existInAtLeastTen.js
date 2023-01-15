@@ -1,8 +1,6 @@
-import os from 'os';
 import fs from 'fs/promises';
-import {quickSort} from './quickSort.js';
 import {uniqueValues} from './findUniqueValues.js';
-import {binarySearch} from './binarySearch.js';
+
 
 async function filesWordsToArrayOfSets()
 {

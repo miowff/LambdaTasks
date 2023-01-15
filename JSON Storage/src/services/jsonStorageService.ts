@@ -6,29 +6,31 @@ export class JsonStorageService
 {
     async addUserDataToDbAsync(userData:UserJsonData)
     {
-        try
+        var data = await database.findUserDataByUrlAsync(userData.userUrl,userData.email);
+        if(data && data.email == userData.email)
         {
-            var data = await database.findUserDataByUrlAsync(userData.userUrl);
-            if(data)
-            {
-                throw ApiError.BadRequest("Data with the same url is already exists!");
-            }
-            await database.addUserDataToDbAsync(userData);
-            return;
+            throw ApiError.BadRequest("Data on the same route is already exist!");
         }
-        catch(err)
-        {
-            console.log(err);
-        }
+        await database.addUserDataToDbAsync(userData);
+        return;
     }
-    async getUserDataFromDbAsync(url:string)
+    async getUserDataFromDbAsync(url:string,userEmail:string)
     {
-        var data = await database.findUserDataByUrlAsync(url);
+        var data = await database.findUserDataByUrlAsync(url,userEmail);
         if(!data)
         {
             throw ApiError.NotFound();
         }
         return data.jsonData;
+    }
+    async updateDataAsync(userData:UserJsonData)
+    {
+        var data = await database.findUserDataByUrlAsync(userData.userUrl,userData.email);
+        if(!data)
+        {
+            throw ApiError.NotFound();
+        }
+        await database.update(userData);
     }
 }
 

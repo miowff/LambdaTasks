@@ -1,14 +1,15 @@
 import express,{Express,Request,Response} from 'express';
-import {UserJsonData} from './models/UserJsonDataModel';
 import bodyParser from 'body-parser';
-import defaultRouter from './appRouter';
-import {handleError} from './Middleware/errorsmiddleware';
+import jsonDataRouter from './json-data-router';
+import tokenRouter from './tokens-router';
+import {handleError} from './Middleware/errors-middleware';
 
 const app:Express = express();
 const port = 3000;
 
 app.use(bodyParser.json());
-app.use('/defaultRoute',defaultRouter);
+app.use('/defaultRoute',jsonDataRouter);
+app.use(tokenRouter);
 app.use(handleError);
 
 app.listen(port,()=>

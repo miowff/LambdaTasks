@@ -8,5 +8,5 @@ export function handleError(error:Error,req:Request,res:Response,next:NextFuncti
     {
         return res.status(error.status).json({message:error.message})
     }
-    return res.status(500).json({message:`Unexpected error! ${error.message}`});
+    return res.status(500).json({message:error.message});
 }

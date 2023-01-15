@@ -1,6 +1,5 @@
 import { MongoClient } from "mongodb";
 import {UserJsonData} from '../models/UserJsonDataModel';
-import { MONGODB_CONNECTION_URL } from "../constants";
 
 export class Database
 {
@@ -9,7 +8,7 @@ export class Database
     private usersDataCollection:any;
     constructor()
     {
-        this.mongoDbClient = new MongoClient(MONGODB_CONNECTION_URL);
+        this.mongoDbClient = new MongoClient('mongodb+srv://Mykola:1TsY7QhcEl409AAS@cluster0.8vibn79.mongodb.net/?retryWrites=true&w=majority');
         this.database = this.mongoDbClient.db("JsonStorageDb");
         this.usersDataCollection = this.database.collection("UsersJsonData");
     }
@@ -18,9 +17,7 @@ export class Database
     {
         try
         {
-            await this.mongoDbClient.connect();
             var operatioResult = await this.usersDataCollection.insertOne(userData);
-            await this.mongoDbClient.close();
             return operatioResult;
         }
         catch(err)
@@ -29,19 +26,16 @@ export class Database
         }
     }
 
-    async findUserDataByUrlAsync(userUrl:string)
+    async findUserDataByUrlAsync(userUrl:string,userEmail:string)
     {
-        try
-        {
-            await this.mongoDbClient.connect();
-            var userData = await this.usersDataCollection.findOne({userUrl:userUrl});
-            await this.mongoDbClient.close();
-            return userData;
-        }
-        catch(err)
-        {
-            console.log(err);
-        }
+        var userData = await this.usersDataCollection.findOne({userUrl:userUrl,email:userEmail});
+        return userData;
+    }
+    async update(userData:UserJsonData)
+    {
+        await this.usersDataCollection.updateOne(
+            {userUrl:userData.userUrl,email:userData.email},
+            {$set:{jsonData:userData.jsonData}});
     }
 } 
 

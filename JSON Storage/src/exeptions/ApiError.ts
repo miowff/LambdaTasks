@@ -6,6 +6,7 @@ export class ApiError extends Error
     {
         super();
         this.status = status;
+        this.message = message;
     }
     static NotFound()
     {

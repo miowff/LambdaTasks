@@ -16,7 +16,7 @@ const chatId = fs.readFileSync(chatIdPath,'utf-8', (err) =>
 function setChatId()
 {
     bot.startPolling();
-    bot.onText(/\/start/, msg =>
+    bot.on('message', msg =>
     {
         fs.writeFileSync(chatIdPath,msg.chat.id.toString());
     });

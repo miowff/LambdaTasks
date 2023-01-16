@@ -1,4 +1,6 @@
-export const handler = async (event, context, callback)=> 
+import {  PreSignUpTriggerEvent } from "aws-lambda";
+
+export const handler = async (event:PreSignUpTriggerEvent, context, callback)=> 
 {
    try
    {

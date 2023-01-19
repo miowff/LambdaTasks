@@ -10,7 +10,6 @@ class TokenController
         {
             let userEmail = req.body.userEmail;
             let token = jwt.sign({userEmail:userEmail},JWT_SECRET,{algorithm:'HS256',expiresIn:45});
-            
             res.json(token);
         }
         catch(err)

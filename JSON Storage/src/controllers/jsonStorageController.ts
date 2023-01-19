@@ -55,6 +55,21 @@ class JsonStorageController
             next(err);
         }
     }
+    async deleteData(req:Request,res:Response,next:NextFunction)
+    {
+        try
+        {
+            const token = req.headers['authorization'] as string;
+            let decodedToken = tokenValidator(token);
+            let email = decodedToken['userEmail'];
+            let result = await jsonStorageService.deleteData(req.params.userRoute,email);
+            res.status(200).json(result);
+        }
+        catch(err)
+        {
+            next(err);
+        }
+    }
 }
 
 const jsonStorageController = new JsonStorageController();

@@ -8,7 +8,7 @@ export class Database
     private usersDataCollection:any;
     constructor()
     {
-        this.mongoDbClient = new MongoClient('mongodb+srv://Mykola:<password>@cluster0.8vibn79.mongodb.net/?retryWrites=true&w=majority');
+        this.mongoDbClient = new MongoClient('mongodb+srv://Mykola:<PASSWORD>@cluster0.8vibn79.mongodb.net/?retryWrites=true&w=majority');
         this.database = this.mongoDbClient.db("JsonStorageDb");
         this.usersDataCollection = this.database.collection("UsersJsonData");
     }
@@ -36,6 +36,11 @@ export class Database
         await this.usersDataCollection.updateOne(
             {userUrl:userData.userUrl,email:userData.email},
             {$set:{jsonData:userData.jsonData}});
+    }
+    async delete(route:string,email:string)
+    {
+      let result = await  this.usersDataCollection.deleteOne({userUrl:route,email:email});
+      return result;
     }
 } 
 

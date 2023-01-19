@@ -1,6 +1,7 @@
 import {UserJsonData} from '../models/UserJsonDataModel';
 import database from "../database/mongoDbClient";
 import { ApiError } from '../exeptions/ApiError';
+import { EphemeralKeyInfo } from 'tls';
 
 export class JsonStorageService
 {
@@ -31,6 +32,15 @@ export class JsonStorageService
             throw ApiError.NotFound();
         }
         await database.update(userData);
+    }
+    async deleteData(route:string,email:string)
+    {
+        let result = await database.delete(route,email);
+        if(!result.hasOwnProperty('deletedCount') ||result.deletedCount == 0)
+        {
+            throw ApiError.NotFound();
+        }
+        return result;
     }
 }
 

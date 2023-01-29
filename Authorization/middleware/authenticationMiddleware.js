@@ -32,10 +32,11 @@ export function checkRefreshToken(req, res, next) {
     if (!refreshToken) {
       return next(ApiError.UnauthorizedError("Refresh token not given"));
     }
-    const tokenPayload = jwtTokenService.validateAccessToken(accessToken);
+    const tokenPayload = jwtTokenService.validateRefreshToken(refreshToken);
     if (!tokenPayload) {
       return next(ApiError.UnauthorizedError("Invalid refresh token"));
     }
+    
     req.refreshToken = refreshToken;
     next();
   } catch (err) {

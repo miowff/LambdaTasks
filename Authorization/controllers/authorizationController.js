@@ -36,9 +36,8 @@ class AuthorizationController {
 
   async refresh(req, res, next) {
     try {
-      console.log(req.body.refreshToken);
-      const result = await usersService.refresh(req.body.refreshToken);
-      res.json(result);
+      const result = await usersService.refresh(req.refreshToken);
+      res.status(200).json(result);
     } catch (err) {
       next(err);
     }

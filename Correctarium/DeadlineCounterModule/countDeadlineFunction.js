@@ -29,8 +29,8 @@ function deadlineDateCounter(hoursToCount, requestDate) {
   }
   while (hoursToCount > 0) {
     let hours = requestDate.getHours();
-    let day = requestDate.getDay();
-    if (day === 6 || day === 0) {
+    let dayIndex = requestDate.getDay();
+    if (dayIndex === 6 || dayIndex === 0) {
       requestDate.setDate(requestDate.getDate() + 1);
       continue;
     }

@@ -1,3 +1,3 @@
-import {botStart} from './telegramBot.js';
+import { botStart } from "./telegramBot.js";
 
 botStart();

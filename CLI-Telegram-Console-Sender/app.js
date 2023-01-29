@@ -1,4 +1,3 @@
-import {readCommand} from './commands.js';
+import { readCommand } from "./commands.js";
 
 readCommand();
-

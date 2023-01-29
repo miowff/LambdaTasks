@@ -1,5 +1,4 @@
-export interface MarketRequests
-{
-    MarketId:string,
-    RequestsCount:number
+export interface MarketRequests {
+  MarketId: string;
+  RequestsCount: number;
 }

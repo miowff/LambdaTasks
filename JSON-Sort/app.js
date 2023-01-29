@@ -1,6 +1,4 @@
-import { createResult } from './createResult.js';
+import { createResult } from "./createResult.js";
 
-var result = await createResult();
+const result = await createResult();
 console.log(result);
-
-

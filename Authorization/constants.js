@@ -1,5 +1,8 @@
-export const PORT = process.env.PORT ?? 3000;
+import dotenv from 'dotenv';
 
-export const SECRET = "DPwZqIgFrwDebghywePPa";
-export const RFRESH_SECRET = "ZDdfsdjfHJJFDgg";
+dotenv.config();
 
+export const PORT = process.env.PORT ;
+export const SECRET = process.env.SECRET;
+export const RFRESH_SECRET = process.env.RFRESH_SECRET;
+export const MONGO_DB_CONNECTION_URL = process.env.MONGO_DB_CONNECTION_URL;

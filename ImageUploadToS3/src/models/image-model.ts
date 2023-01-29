@@ -1,6 +1,5 @@
-export interface ImageModel
-{
-    ImageKey:string,
-    ImageName:string,
-    AccessUrl:string
+export interface ImageModel {
+  ImageKey: string;
+  ImageName: string;
+  AccessUrl: string;
 }

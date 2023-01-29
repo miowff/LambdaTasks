@@ -1,0 +1,4 @@
+PORT = 3000
+SECRET = "YOUR_RANDOM_STRING"
+RFRESH_SECRET = "YOUR_RANDOM_STRING"
+MONGO_DB_CONNECTION_URL = "mongodb+srv://Username:*******@cluster0.8vibn79.mongodb.net/?retryWrites=true&w=majority"

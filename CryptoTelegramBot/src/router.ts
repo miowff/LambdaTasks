@@ -4,6 +4,9 @@ import constants from './constants';
 
 const defaultRouter = Router();
 
-defaultRouter.post(constants.REQUEST_URL,telegramRequestsController.handleRequest);
+defaultRouter.post(
+  constants.REQUEST_URL,
+  telegramRequestsController.handleRequest,
+);
 
 export default defaultRouter;

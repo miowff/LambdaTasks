@@ -1,80 +1,45 @@
-import {MongoClient} from 'mongodb';
-import {MONGO_DB_CONNECTION_URL} from '../mongodbUrl.js';
+import { MongoClient } from "mongodb";
+import { MONGO_DB_CONNECTION_URL } from "../constants.js";
 
-const mongoDbClient = new MongoClient(MONGO_DB_CONNECTION_URL);
-const database = mongoDbClient.db("AuthorizationDB");
-
-var users = database.collection("Users");
-var tokens = database.collection("Tokens");
-
-export async function addUserToDb(userEmail,passwordHash)
-{
-  try 
-  {
-    await mongoDbClient.connect();
-    var user = { email: userEmail, passwordHash:passwordHash};
-    const result = await users.insertOne(user);
+export class Database {
+  mongoDbClient;
+  database;
+  users;
+  tokens;
+  constructor() {
+    this.mongoDbClient = new MongoClient(MONGO_DB_CONNECTION_URL);
+    this.database = this.mongoDbClient.db("AuthorizationDB");
+    this.users = this.database.collection("Users");
+    this.tokens = this.database.collection("Tokens");
+  }
+  async addUserToDb(userEmail, passwordHash) {
+    await this.mongoDbClient.connect();
+    const user = { email: userEmail, passwordHash: passwordHash };
+    const result = await this.users.insertOne(user);
     return result;
-  } 
-  catch(err)
-  {
-    console.log(err.message);
   }
-}
-
-export async function findUserByEmail(email)
-{
-  try 
-  {
-    await mongoDbClient.connect();
-    var query = { email: email};
-    var user = await users.findOne(query);
+  async findUserByEmail(email) {
+    await this.mongoDbClient.connect();
+    const query = { email: email };
+    const user = await this.users.findOne(query);
     return user;
-  } 
-  catch(err)
-  {
-    console.log(err.message);
+  }
+  async saveToken(userId, refreshToken) {
+    await this.mongoDbClient.connect();
+    return await this.tokens.updateOne(
+      { userId: userId },
+      { $set: { userId: userId, refreshToken: refreshToken } },
+      { upsert: true }
+    );
+  }
+  async findToken(refreshToken) {
+    await this.mongoDbClient.connect();
+    return await this.tokens.findOne({ refreshToken: refreshToken });
+  }
+  async dbClientClose() {
+    await this.mongoDbClient.close();
   }
 }
 
-export async function saveToken(userId,refreshToken)
-{
-  try
-  {
-    await mongoDbClient.connect();
-    return await tokens.updateOne(
-      {userId:userId},
-      {$set:{userId:userId,refreshToken:refreshToken}},
-      { upsert: true });
-  }
-  catch(err)
-  {
-    console.log(err.message);
-  }
-}
-export async function findToken(refreshToken)
-{
-  try
-  {
-    await mongoDbClient.connect();
-    return await tokens.findOne({refreshToken:refreshToken});  
-  }
-  catch(err)
-  {
-    console.log(err.message)
-  }
-}
-export async function dbClientClose()
-{
-  try
-  {
-    await mongoDbClient.close();
-  }
-  catch(err)
-  {
-    console.log(err.message);
-  }
-}
-
-
- 
+const database = new Database();
+export default database;

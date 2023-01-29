@@ -1,19 +1,16 @@
 import axios from "axios";
-
-class CoinpapricaRequests
-{
-    async requestDataAsync()
-    {
-        try
-    {
-        const responce = await axios.get(`https://api.coinpaprika.com/v1/tickers?quotes=USD`);
-        return responce.data;
+import constants from "../../constants";
+class CoinpapricaRequests {
+  async requestDataAsync() {
+    try {
+      const responce = await axios.get(
+        constants.COINPAPRICA_URL as string
+      );
+      return responce.data;
+    } catch (err) {
+      console.log(err);
     }
-    catch(err)
-    {
-        console.log(err);
-    }
-    }
+  }
 }
 const coinpapricaRequests = new CoinpapricaRequests();
 export default coinpapricaRequests;

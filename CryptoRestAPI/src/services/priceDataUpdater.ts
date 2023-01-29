@@ -7,16 +7,25 @@ import coinMarketCapService from "./exhangesServices/coinMarketCapService";
 import { CurrenciesPriceData } from "../models/CurrenciesPriceData";
 import coinbaseService from "./exhangesServices/coinbaseService";
 
-export async function updatePricesAsync()
-{
-    const currencies = await currenciesRepository.getAllAsync();
-    const unixTime = Date.now();
-    const date = new Date();
-    const pricesData:CurrenciesPriceData[]=[];
-    pricesData.push(await coinbaseService.getPriceInfoAsync(date,unixTime,currencies));
-    pricesData.push(await coinMarketCapService.getPriceInfoAsync(date,unixTime,currencies));
-    pricesData.push(await coinpapricaService.getPriceInfoAsync(date,unixTime,currencies));
-    pricesData.push(await kucoinService.getPriceInfoAsync(date,unixTime,currencies));
-    pricesData.push(await coinStatsService.getPriceInfoAsync(date,unixTime,currencies));
-    await priceDataRepository.addManyAsync(pricesData);
+export async function updatePricesAsync() {
+  const currencies = await currenciesRepository.getAllAsync();
+  const unixTime = Date.now();
+  const date = new Date();
+  const pricesData: CurrenciesPriceData[] = [];
+  pricesData.push(
+    await coinbaseService.getPriceInfoAsync(date, unixTime, currencies)
+  );
+  pricesData.push(
+    await coinMarketCapService.getPriceInfoAsync(date, unixTime, currencies)
+  );
+  pricesData.push(
+    await coinpapricaService.getPriceInfoAsync(date, unixTime, currencies)
+  );
+  pricesData.push(
+    await kucoinService.getPriceInfoAsync(date, unixTime, currencies)
+  );
+  pricesData.push(
+    await coinStatsService.getPriceInfoAsync(date, unixTime, currencies)
+  );
+  await priceDataRepository.addManyAsync(pricesData);
 }

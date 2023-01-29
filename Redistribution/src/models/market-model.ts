@@ -1,6 +1,5 @@
-export interface MarketModel
-{
-    Id:string,
-    MarketName:string,
-    MaxRrequestsCount:number
+export interface MarketModel {
+  Id: string;
+  MarketName: string;
+  MaxRrequestsCount: number;
 }

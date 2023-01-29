@@ -1,0 +1,19 @@
+NODE_ENV = development
+#Telegram & Ngrok
+BOT_TOKEN = 1111111111:*****-******
+TELEGRAM_API_URL = https://api.telegram.org/bot1111111111:*****-******
+SERVER_URL =  https://9a23-188-163-104-115.ngrok.io 
+WEBHOOK_URL = https://api.telegram.org/bot1111111111:*****-******/setWebhook?url=https://9a23-188-163-104-115.ngrok.io/webhook/1111111111:*****-******
+REQUEST_URL = /webhook/1111111111:*****-******
+#Express
+PORT = 8000
+HOST = localhost
+HOST_URL = http://localhost:8000
+
+#CryptoApiUrl
+CRYPTO_API_URL = http://localhost:3000/price
+
+#SQLite 
+
+
+

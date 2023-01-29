@@ -1,0 +1,22 @@
+NODE_ENV = development
+
+#Express server config
+PORT = 3000
+HOST = localhost
+HOST_URL = http://localhost:3000
+
+#MySql server config
+SQL_USER = root
+SQL_PASSWORD = root
+SQL_DATABASE = dbName
+SQL_SERVER = localhost
+
+#API_KEYS
+COIN_MARKET_CAP_API_KEY=********-****-****-****-************
+
+#REQUEST_URL
+COINSTATS_URL = "https://api.coinstats.app/public/v1/coins"
+KUCOIN_URL = "https://api.kucoin.com/api/v1/prices"
+COINPAPRICA_URL = "https://api.coinpaprika.com/v1/tickers?quotes=USD"
+COIN_MARKET_CAP_URL ="https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest"
+COINBASE_URL = "https://api.coinbase.com/v2/exchange-rates"

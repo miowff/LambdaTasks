@@ -1,5 +1,4 @@
-export interface RequestData
-{
-    MarketId:string,
-    MarketName:string,
+export interface RequestData {
+  MarketId: string;
+  MarketName: string;
 }

@@ -1,6 +1,5 @@
-export interface UserModel
-{
-    Id:number;
-    Name:string;
-    Nickname?:string;
+export interface UserModel {
+  Id: number;
+  Name: string;
+  Nickname?: string;
 }

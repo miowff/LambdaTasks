@@ -1,6 +1,5 @@
-export interface CurrencyModel
-{
-    Id:string;
-    CurrencyCode:string;
-    CurrencyName:string;
+export interface CurrencyModel {
+  Id: string;
+  CurrencyCode: string;
+  CurrencyName: string;
 }

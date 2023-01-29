@@ -12,16 +12,17 @@ function groupVcations(jsonVacationData) {
   const vacationsData = JSON.parse(jsonVacationData);
   const result = [];
   vacationsData.forEach((userData) => {
+    const { _id, name } = userData.user;
     let userModel = new UserModel(
-      userData.user._id,
-      userData.user.name,
+      _id,
+      name,
       getWeekendDates(userData.usedDays, userData.endDate)
     );
 
     const existingUserIndex = result.findIndex(
       (user) => user.userId === userModel.userId
     );
-    if (existingUserIndex == -1) {
+    if (existingUserIndex === -1) {
       result.push(userModel);
     } else {
       const newDatesArray = result[existingUserIndex].weekendDates.concat(
@@ -36,16 +37,15 @@ function groupVcations(jsonVacationData) {
 
 function getWeekendDates(usedDays, endDate) {
   const weekendDates = [];
-  if (usedDays == 1) {
+  if (usedDays === 1) {
     let date = new Date(endDate);
     weekendDates.push(date.toDateString());
     return weekendDates;
-  } else {
-    for (let i = 0; i < usedDays; i++) {
-      let date = new Date(endDate);
-      date.setDate(date.getDate() - i);
-      weekendDates.push(date.toDateString());
-    }
-    return weekendDates;
   }
+  for (let i = 0; i < usedDays; i++) {
+    let date = new Date(endDate);
+    date.setDate(date.getDate() - i);
+    weekendDates.push(date.toDateString());
+  }
+  return weekendDates;
 }

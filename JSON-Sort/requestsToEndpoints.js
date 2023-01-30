@@ -1,22 +1,21 @@
 import axios from "axios";
 
-export async function getResponces(endpointsArray) {
-  const responcesArray = [];
-  let requestAttempts;
-  for (var i = 0; i < endpointsArray.length; i++) {
-    requestAttempts = 0;
-    while (requestAttempts < 3) {
-      try {
-        requestAttempts++;
-        const responce = await axios.get(endpointsArray[i]);
-        responcesArray.push(responce.data);
-        break;
-      } catch (err) {
-        if (requestAttempts === 3) {
-          console.log(err + " " + "Endpoint: " + endpointsArray[i]);
+export const getResp = async (endpointsArray) => {
+  const result = await Promise.allSettled(
+    endpointsArray.map(async (url) => {
+      let requestAttempts = 0;
+      while (requestAttempts < 3) {
+        try {
+          requestAttempts++;
+          const { data: result } = await axios.get(url);
+          return result;
+        } catch (err) {
+          if (requestAttempts === 3) {
+            console.log(err + " " + "Endpoint: " + url);
+          }
         }
       }
-    }
-  }
-  return responcesArray;
-}
+    })
+  );
+  return result;
+};

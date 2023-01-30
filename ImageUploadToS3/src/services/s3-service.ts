@@ -1,5 +1,6 @@
 import AWS from "aws-sdk";
 
+
 class S3Service {
   private s3 = new AWS.S3({ region: process.env.REGION });
   public async createPresignedPost(

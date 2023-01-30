@@ -2,7 +2,7 @@ import type { AWS } from "@serverless/typescript";
 
 const functions: AWS["functions"] = {
   signUp: {
-    handler: "src/lambdas/cognito-actions/user-sign-up.handler",
+    handler: "src/lambdas/cognito/user-sign-up.handler",
     events: [
       {
         http: {
@@ -14,7 +14,7 @@ const functions: AWS["functions"] = {
     ],
   },
   signIn: {
-    handler: "src/lambdas/cognito-actions/user-sign-in.handler",
+    handler: "src/lambdas/cognito/user-sign-in.handler",
     events: [
       {
         http: {
@@ -26,7 +26,7 @@ const functions: AWS["functions"] = {
     ],
   },
   preSignUp: {
-    handler: "src/lambdas/cognito-actions/sign-up-confirm.handler",
+    handler: "src/lambdas/cognito/sign-up-confirm.handler",
     events: [
       {
         cognitoUserPool: {
@@ -38,7 +38,7 @@ const functions: AWS["functions"] = {
     ],
   },
   addItem: {
-    handler: "src/lambdas/dynamoDB-actions/add-user-item-key.handler",
+    handler: "src/lambdas/dynamoDB/add-user-item-key.handler",
     events: [
       {
         s3: {
@@ -50,7 +50,7 @@ const functions: AWS["functions"] = {
     ],
   },
   deleteImageKey: {
-    handler: "src/lambdas/dynamoDB-actions/remove-image-key.handler",
+    handler: "src/lambdas/dynamoDB/remove-image-key.handler",
     events: [
       {
         s3: {
@@ -62,7 +62,7 @@ const functions: AWS["functions"] = {
     ],
   },
   createPresignedPost: {
-    handler: "src/lambdas/s3-actions/create-presigned-post.handler",
+    handler: "src/lambdas/s3/create-presigned-post.handler",
     events: [
       {
         http: {
@@ -78,7 +78,7 @@ const functions: AWS["functions"] = {
     ],
   },
   deleteImage: {
-    handler: "src/lambdas/s3-actions/delete-image.handler",
+    handler: "src/lambdas/s3/delete-image.handler",
     events: [
       {
         http: {
@@ -94,7 +94,7 @@ const functions: AWS["functions"] = {
     ],
   },
   myImages: {
-    handler: "src/lambdas/s3-actions/get-all-user-images.handler",
+    handler: "src/lambdas/s3/get-all-user-images.handler",
     events: [
       {
         http: {

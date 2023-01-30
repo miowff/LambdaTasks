@@ -45,8 +45,9 @@ class AuthorizationController {
 
   async getMe(req, res, next) {
     try {
-      const userData = usersService.me(req.token);
-      res.json(userData);
+      const {token,params} = req;
+      const userData = usersService.me(token);
+      res.status(200).json({request_num: params,data:userData});
     } catch (err) {
       next(err);
     }

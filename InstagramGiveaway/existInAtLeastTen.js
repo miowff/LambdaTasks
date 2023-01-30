@@ -22,11 +22,11 @@ export async function existInAtLeastTen() {
     let counter = 0;
     for (var i = 0; i < wordsSets.length; i++) {
       if (wordsSets[i].has(word)) {
+        counter++;
         if (counter === 10) {
           result.push(word);
           break;
         }
-        counter++;
       }
     }
   });

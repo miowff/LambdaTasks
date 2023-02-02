@@ -15,23 +15,22 @@ async function filesWordsToArrayOfSets() {
 }
 
 export async function existInAtLeastTen() {
-  const uniqueWords = await uniqueValues();
-  const result = [];
+  const uniqueWords = Array.from(await uniqueValues());
   const wordsSets = await filesWordsToArrayOfSets();
-  uniqueWords.forEach((word) => {
+  const res = uniqueWords.reduce((acc, value) => {
     let counter = 0;
     for (var i = 0; i < wordsSets.length; i++) {
-      if (wordsSets[i].has(word)) {
+      if (wordsSets[i].has(value)) {
         counter++;
         if (counter === 10) {
-          result.push(word);
+          acc.push(value);
           break;
         }
       }
     }
-  });
+    return acc;
+  }, []);
   console.log(
-    "Словосочетаний, которые есть, как минимум, в десяти файлах: " +
-      result.length
+    "Словосочетаний, которые есть, как минимум, в десяти файлах: " + res.length
   );
 }

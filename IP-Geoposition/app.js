@@ -13,7 +13,11 @@ const IP_RANGES = parseCsvData(fileData);
 
 app.get("/getIpData", function (request, responce) {
   try {
-    const ip = request.headers["x-forwarded-for"];
+    let ip = request.headers["x-forwarded-for"];
+    if (!ip) {
+      const ipAddress = request.socket.remoteAddress.split(":");
+      ip = ipAddress[ipAddress.length-1];
+    }
     const intIp = ipToInt(ip);
     const resultRange = binarySearch(IP_RANGES, intIp);
     const result = new ResultModel(ip, resultRange.countryName);
